@@ -1,0 +1,687 @@
+@import "path/variables.scss";
+@import "path/mixins.scss";
+
+/*ui styles start*/
+.container,
+.heading,
+.options,
+.sort-box{
+  @extend %clearfix;
+}
+.container{
+  max-width: $max-width;
+  margin: 0 auto;
+}
+.align-left{float: left !important;}
+.align-right{float: right !important;}
+.flex-box{
+  @include flexbox();
+  align-items: flex-start;
+  align-content: space-between;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: flex-start;
+}
+.flex{
+  @include flex(0 1);
+  align-self: flex-start;
+  margin: 0;
+  width: auto;
+}
+.title{
+  @include font-size($big-font-size);
+  color: $dark-blue;
+}
+.wrap{overflow: hidden;}
+.heading{
+  margin: 0 0 $tiny-indent;
+}
+.orange{
+  color: $orange;
+}
+.green{
+  color: $green;
+}
+.btn{
+  @include font-size($middle-font-size);
+  color: $white;
+  border: none;
+  background: $light-blue;
+  height: 50px;
+  padding: 0 $base-indent;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  outline: none;
+  &:not(.ordered):hover{
+     -webkit-animation: pulse 1s infinite;
+      animation: pulse 1s infinite;
+  }
+  &.ordered{
+    background: $dark-blue;
+  }
+}
+.btn-back-to{
+  @include font-size($middle-font-size - 4px);
+  text-transform: capitalize;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.main-select{
+  @include font-size($base-font-size);
+  font-weight: bold;
+  color: $dark-blue;
+  height: $base-indent + 10px;
+  border: 2px solid $light-blue;
+  background: transparent;
+  outline: none;
+  width: $full-size;
+}
+.main-checkbox,
+.main-radio{
+  height: 14px;
+  margin: 0;
+  width: 15px;
+  display: none;
+}
+.main-checkbox + label,
+.main-radio + label{
+  position: relative;
+  padding-left: $base-indent + 2px;
+}
+.main-checkbox + label:after,
+.main-radio + label:after{
+  content: "";
+  border: 2px solid $dark-blue;
+  position: absolute;
+  height: 14px;
+  left: 0;
+  top: 2px;
+  width: 14px;
+}
+.main-radio + label:after{
+  @include border-radius(8px);
+}
+.main-checkbox + label:before,
+.main-radio + label:before{
+  @include font-size($middle-font-size);
+  @include transform(scale(0));
+  @include transition(transform $base-duration ease-in);
+  color: $green;
+  content: "✔";
+  position: absolute;
+  left: 1px;
+  top: -3px;
+}
+.main-radio + label:before{
+  @include border-radius(5px);
+  background: $green;
+  content: "";
+  height: 12px;
+  left: 3px;
+  top: 5px;
+  width: 12px;
+}
+.main-checkbox:checked + label:before,
+.main-radio:checked + label:before{
+  @include transform(scale(1));
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"]{
+  @include box-sizing(border-radius);
+  //@include box-shadow(inset 0 1px 1px rgba(70, 70, 70, 0.7));
+  @include font-size($base-font-size);
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  padding: $tiny-indent 15px $tiny-indent + 1px;
+  color: $light-blue;
+  outline: none;
+  position: relative;
+  width: $full-size;
+  z-index: 1;
+}
+a{
+  text-decoration: none;
+  color: $light-blue;
+}
+a:hover{
+  text-decoration: underline;
+}
+h1, h2, h3, h4 {margin: 0;}
+p{margin: 0 0 $tiny-indent;}
+label{
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  cursor: pointer;
+}
+/*ui styles end*/
+/*common styles start*/
+html, body{
+  height: $full-size;
+}
+body{
+  @include font-size($base-font-size);
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-family: $arial-font-family;
+  color: $dark-blue;
+  background: $lightest-blue ;
+  margin: 0;
+  //font-size: 2vw;
+  -webkit-text-size-adjust: $full-size;
+}
+#wrapper{
+  min-height: $full-size;
+}
+#content{
+  @include flex(1);
+  -webkit-order: 2;
+  order: 2;
+}
+#sidebar{
+  @include flex(0 300px);
+  -webkit-order: 1;
+  order: 1;
+}
+/*books list styles start*/
+.books-list{
+  @include list(0, 0 $base-indent - 5px);
+  /*books list - grid styles start*/
+  &.grid{
+    li {
+      text-align: center;
+      @include transition(transform $base-duration linear, opacity $base-duration linear, width $base-duration linear, flex $base-duration linear);
+      height: 508px;
+      &.flex {
+        @include flex(0 33%);
+        max-width: 33%;
+        padding: 0 8px $tiny-indent;
+      }
+      /*Animate books list item styles start*/
+      &.ng-enter,
+      &.ng-move{@include transition(transform $base-duration linear $base-duration, opacity $base-duration linear, width $base-duration linear, flex $base-duration linear);}
+      &.ng-leave{@include transition(transform $base-duration linear, opacity $base-duration + 0.05 linear, width $base-duration + .1s linear, flex $base-duration + 0.15s linear);}
+      &.ng-enter,
+      &.ng-move,
+      &.ng-leave.ng-leave-active{
+        @include transform(scale(0));
+        @include flex(0 0);
+        opacity: 0;
+        width: 0;
+      }
+      &.ng-enter.ng-enter-active,
+      &.ng-move.ng-move-active,
+      &.ng-leave{
+        @include transform(scale(1));
+        @include flex(0 33%);
+        opacity: 1;
+        width: 33%;
+      }
+      /*Animate books list item styles end*/
+    }
+    .title{
+      @include font-size($big-font-size);
+    }
+    a{height: $full-size;}
+    .img-holder{
+      height: 250px;
+      margin: 0;
+      float: none;
+      width: $full-size;
+      img{
+        display: inline-block;
+        vertical-align: top;
+        height: $full-size;
+        width: auto;
+      }
+    }
+    .row,
+    .price{
+      float: none !important;
+      margin-bottom: 5px;
+    }
+    .price{
+      padding: 0;
+      margin: 0;
+    }
+    .heading{
+      margin: $tiny-indent;
+    }
+    .text-box{
+      text-align: justify;
+    }
+  }
+  /*books list - grid styles end*/
+  /*books list - animate styles start*/
+  &.animate{
+    li{
+      @include transform(scale(0));
+      opacity: 0;
+    }
+  }
+  /*books list - down animate styles start*/
+  &.hide{
+    li{
+      @include transform(scale(0));
+    }
+  }
+  /*books list - down animate styles end*/
+  /*books list - animate styles end*/
+  li{
+    @include transform(scale(1));
+    @include box-sizing(border-box);
+    padding: 0 0 $base-indent;
+    position: relative;
+    opacity: 1;
+    &.flex{
+      @include flex(0 $full-size);
+    }
+    /*Animate books list item styles end*/
+  }
+  &:not(.grid){
+    li{
+      @include transition(transform $base-duration linear, opacity $base-duration linear, height $base-duration linear);
+      height: $base-height;
+      max-height: $base-height;
+      /*Animate books list item styles start*/
+      &.ng-enter,
+      &.ng-move{
+        @include transition(transform $base-duration linear $base-duration, opacity $base-duration linear, height $base-duration linear);
+        opacity: 0;
+        // @include transition(all 0.35s ease-in);
+      }
+      &.ng-leave{
+        opacity: 0;
+        @include transition(transform $base-duration linear, opacity $base-duration linear, height $base-duration linear);
+      }
+      &.ng-enter,
+      &.ng-move,
+      &.ng-leave.ng-leave-active{
+        @include transform(scale(0));
+        opacity: 0;
+        height: 0;
+      }
+      &.ng-enter.ng-enter-active,
+      &.ng-move.ng-move-active,
+      &.ng-leave{
+        @include transform(scale(1));
+        opacity: 1;
+        height: $base-height;
+      }
+      /*Animate books list item styles end*/
+    }
+  }
+  a{
+    @include transition(all $base-duration + .1s linear);
+    @include box-sizing(border-box);
+    border: 5px solid #d7e4e8;
+    padding: $tiny-indent;
+    color: $dark-blue;
+    height: $full-size;
+    overflow: hidden;
+    display: block;
+    &:hover{
+      text-decoration: none;
+      border-color: $light-blue;
+    }
+  }
+  .img-holder{
+    max-height: $full-size;
+    float: left;
+    width: 150px;
+    margin-right: $tiny-indent;
+    overflow: hidden;
+    &.flex{
+      @include flex(0 150px);
+      margin-right: $base-indent;
+    }
+    img{
+      height: $full-size;
+      width: $full-size;
+    }
+  }
+  .holder{
+    overflow: hidden;
+  }
+  .heading{margin-bottom: $base-indent;}
+  .author{
+    @include font-size($middle-font-size);
+    display: block;
+  }
+  .price{
+    @include font-size($middle-font-size);
+    padding-top: $tiny-indent + 2px;
+  }
+  .text-box{
+    height: 59px;
+    position: relative;
+    overflow: hidden;
+    &:after{
+      content: '';
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      height: 20px;
+      width: $full-size;
+      z-index: 1;
+      background-image: -moz-linear-gradient(left, rgba(244,247,248,0) 0%, rgba(244,247,248,1) 54%, rgba(244,247,248,1) 65%);
+      background-image: -webkit-linear-gradient(left, rgba(244,247,248,0) 0%,rgba(244,247,248,1) 54%,rgba(244,247,248,1) 65%);
+      background-image: linear-gradient(to right, rgba(244,247,248,0) 0%,rgba(244,247,248,1) 54%,rgba(244,247,248,1) 65%);
+    }
+  }
+  .available{
+    background: $red;
+    color: $white;
+    position: absolute;
+    left: -4px;
+    top: 10%;
+    padding: 2px 3px;
+    text-transform: capitalize;
+    &.active{
+      background: $green;
+    }
+  }
+}
+/*books list styles end*/
+.options{
+  padding: $base-indent;
+  .main-select{
+    margin: -5px 0 0 5px;
+    width: 300px;
+  }
+}
+/*view list styles start*/
+.view-list{
+  @include list(0, 0);
+  @include font-size($middle-font-size);
+  overflow: hidden;
+  li{
+    float: left;
+    margin: 0 0 0 $tiny-indent;
+    a{@include transition(all $base-duration ease-in);}
+    &.active,
+    &:hover{
+      a{
+        color: $orange;
+      }
+    }
+  }
+}
+/*view list styles end*/
+/*filter block styles start*/
+.filter-block{
+  @include font-size($middle-font-size - 5px);
+  padding-top: $big-indent + 25px;
+  .frame{
+    margin: 0 0 $big-indent;
+  }
+  .list{
+    @include list(0, 0 0 0 10px);
+    position: relative;
+    z-index: 2;
+    li{
+      margin: 0 0 $tiny-indent - 5px;
+      position: relative;
+    }
+  }
+  label{
+    color: $light-blue;
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+  h2{
+    @include font-size($middle-font-size);
+    margin: 0 0 $tiny-indent;
+  }
+}
+/*search box styles start*/
+.search-box{
+  position: relative;
+  &.active{
+    .animate-graph{
+      stroke-dashoffset: 0;
+    }
+    .note{
+      @include transform(scale3d(1.4, 1.4, 1) translate3d(-0.9em, -2.4em, 0));
+      //zoom: 140%;
+      color: $dark-blue;
+      -webkit-filter: blur(0px);
+      -webkit-backface-visibility: hidden;
+    }
+  }
+  label{
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    height: $full-size;
+    width: $full-size;
+  }
+  .animate-graph{
+    @include transform(scale3d(1, -1, 1));
+    @include transition(stroke-dashoffset 0.4s);
+    position: absolute;
+    left: 0;
+    top: 0;
+    fill: none;
+    pointer-events: none;
+    stroke: $light-blue;
+    stroke-width: 6px;
+    stroke-dasharray: 962;
+    stroke-dashoffset: 754;
+  }
+  .note{
+    @include transition(transform 0.3s);
+    -webkit-transform-origin: 0 50%;
+    transform-origin: 0 50%;
+    font-style: normal;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: text;
+    font-weight: bold;
+    color: $light-blue;
+    padding: $tiny-indent $tiny-indent + 5px;
+    filter: blur(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+}
+/*search box styles end*/
+/*filter block styles end*/
+/*info section styles start*/
+.info-section{
+  padding: 80px 0;
+  position: relative;
+  /*gallery styles start*/
+  .gallery{
+    height: 400px;
+    margin-right: $base-indent;
+    padding: 0 0 100px 0;
+    position: relative;
+    &.flex{
+      flex: 0 400px;
+    }
+    .img-holder{
+      overflow: hidden;
+      height: $full-size;
+      img{
+        display: block;
+        height: $full-size;
+        width: $full-size;
+      }
+    }
+    .slider{
+      overflow: hidden;
+      ul{
+        @include list(0, 0);
+      }
+      li{
+        @include transition(transform $base-duration ease-in);
+        @include transform(scale(0));
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 100px;
+        z-index: 1;
+        &.active{
+          @include transform(scale(1));
+          z-index: 2;
+        }
+        img{
+          display: block;
+          height: $full-size;
+          width: $full-size;
+        }
+      }
+    }
+    .thumbnails{
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 100px;
+      width: $full-size;
+      ul{
+        @include list(0, 0);
+        overflow: hidden;
+      }
+      li{
+        @include box-sizing(border-box);
+        @include transition(all $base-duration ease);
+        border: 2px solid transparent;
+        float: left;
+        padding: 5px;
+        overflow: hidden;
+        cursor: pointer;
+        height: 90px;
+        width: $full-size/4;
+        &.active{
+          border: 4px solid $green;
+        }
+      }
+      img{
+        height: $full-size;
+        width: $full-size;
+      }
+    }
+    .btn-prev,
+    .btn-next{
+      @include font-size($big-font-size + 10px);
+      @include transition(transform $base-duration ease);
+      @include transform(scale(1) translate3d(0, -50%, 0));
+      position: absolute;
+      left: 10px;
+      top: 40%;
+      color: $light-blue;
+      border: none;
+      background: none;
+      z-index: 2;
+      cursor: pointer;
+      outline: none;
+      &:hover{
+        @include transform(scale(1.2) translate3d(0, -45%, 0));
+      }
+    }
+    .btn-next{
+      left: auto;
+      right: 10px;
+    }
+  }
+  /*gallery styles end*/
+  /*personal block styles start*/
+  .personal-block{
+    &.flex{
+      flex: 1;
+    }
+    .heading{
+      @include font-size($middle-font-size);
+      margin: 0 0 $base-indent + 10px;
+      padding-right: 172px;
+      position: relative;
+    }
+    .author{
+      display: block;
+    }
+    .price{
+      position: absolute;
+      right: 0;
+      top: $tiny-indent + 2px;
+    }
+    .public{
+      display: block;
+      max-width: 300px;
+      margin-bottom: $base-indent;
+    }
+    .note{
+      display: block;
+      font-style: normal;
+      font-weight: bold;
+      margin-bottom: $base-indent;
+    }
+  }
+  .rating{
+    @include list(0 0 $base-indent, 0);
+    @include font-size($big-font-size);
+    color: #d4d40e;
+    overflow: hidden;
+    li{
+      margin-right: 3px;
+      float: left;
+    }
+  }
+  /*personal block styles end*/
+  .general{
+    text-align: justify;
+    h2{
+      @include font-size($big-font-size - 4px);
+      margin: 0 0 $tiny-indent;
+    }
+  }
+  .btn-back-to{
+    top: 40px;
+  }
+}
+/*info section styles end*/
+/*animation styles start*/
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/*animation styles end*/
+/*common styles end*/

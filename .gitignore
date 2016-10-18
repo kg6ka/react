@@ -1,0 +1,7 @@
+.idea/
+**/npm-debug.log
+**/node_modules
+**/dist
+**/bower_components/
+**/typings
+**/react-15.3.2
